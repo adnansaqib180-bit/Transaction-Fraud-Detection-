@@ -12,26 +12,26 @@ def load_data(csv_file):
     return pd.read_csv(csv_file)
 
 def drop_columns(df : pd.DataFrame, columns_to_drop : list):
-    
-     return df.drop(columns=columns_to_drop)
+    df = df.drop(columns=columns_to_drop,inplace=True)
+    return df
 
 def creat_hours(df : pd.DataFrame, column_name : str):
     df[column_name] = pd.to_datetime(df[column_name])
     df['hour'] = df[column_name].dt.hour
-    df.drop(columns=[column_name], inplace=True)
+    df = df.drop(columns=[column_name], inplace=True)
     return df
 
 def calculate_rate(df : pd.DataFrame, group_col : str, target_col : str):
 
     merch_rate = df.groupby(group_col)[target_col].mean()
     df[f"{group_col}_rate"] = df[group_col].map(merch_rate)
-    df.drop(columns=[group_col], inplace=True)
+    df = df.drop(columns=[group_col], inplace=True)
     return df
 
 def claculate_age (df : pd.DataFrame, col_name : str):
     df[col_name] = pd.to_datetime(df[col_name])
     df['age'] = (pd.Timestamp.now() - df['dob']).dt.days // 365
-    df.drop(columns=[col_name])
+    df = df.drop(columns=[col_name],inplace=True)
     return df
 import numpy as np
 def haversine_np(lon1, lat1, lon2, lat2):
@@ -51,12 +51,12 @@ def haversine_np(lon1, lat1, lon2, lat2):
 def claculate_distance(df : pd.DataFrame ):
     df['distance_km'] = haversine_np(df['long'], df['lat'], df['merch_long'], df['merch_lat'])
     geo_columns = ['lat', 'long', 'merch_lat', 'merch_long']
-    df = df.drop(columns=geo_columns)
+    df = df.drop(columns=geo_columns,inplace=True)
 
     return df 
 
 def feature_engineering(df):
-    col_to_drop = ['Unnamed: 0', 'city', 'state', 'cc_num','zip', 'first', 'last', 'street', 'trans_num']
+    col_to_drop = ['Unnamed: 0','job', 'city', 'state', 'cc_num','zip', 'first', 'last', 'street', 'trans_num']
     drop_columns(df=df, columns_to_drop=col_to_drop)
     creat_hours(df=df,column_name='trans_date_trans_time')
     calculate_rate(df=df,group_col='merchant',target_col='is_fraud')
@@ -67,5 +67,7 @@ def feature_engineering(df):
     return df 
 
 
-    
+def preprocessor(df , col_name : str):
+    df[col_name] = df[col_name].map({"M":1,"F":0})
+    return df  
 
