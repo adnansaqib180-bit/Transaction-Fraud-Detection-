@@ -70,4 +70,7 @@ def feature_engineering(df):
 def preprocessor(df , col_name : str):
     df[col_name] = df[col_name].map({"M":1,"F":0})
     return df  
-
+import joblib 
+def load_model():
+    model = joblib.load('MODELS/trained_model.pkl')
+    return model 

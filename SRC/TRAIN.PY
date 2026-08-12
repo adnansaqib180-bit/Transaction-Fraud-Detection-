@@ -22,7 +22,6 @@ model = LGBMClassifier(
     random_state=42, reg_alpha=1, reg_lambda=0.1, subsample=0.8,
     verbosity=-1
 )
-
 trained_model = model.fit(X,Y)
 
 # save the trained model to a file using joblib
