@@ -72,5 +72,5 @@ def preprocessor(df , col_name : str):
     return df  
 import joblib 
 def load_model():
-    model = joblib.load('MODELS/trained_model.pkl')
+    model = joblib.load(r'c:\Users\USER\OneDrive\Desktop\Transaction Fraud Detection\Transaction-Fraud-Detection-\MODELS\trained_model.pkl')
     return model 
