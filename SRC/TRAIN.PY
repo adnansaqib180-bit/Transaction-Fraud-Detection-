@@ -13,6 +13,7 @@ final_df = preprocessor(final_df , 'gender')
 print(final_df.head())
 
 print('\n =============== df is ready =============')
+print(final_df.columns)
 
 X_train = final_df.drop(columns=['is_fraud'])
 Y_train = final_df['is_fraud']
