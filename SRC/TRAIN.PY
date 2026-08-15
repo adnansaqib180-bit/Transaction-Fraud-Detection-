@@ -24,10 +24,13 @@ model = LGBMClassifier(
     colsample_bytree=0.6, learning_rate=0.05,
     min_child_samples=50, n_estimators=800, num_leaves=15,
     random_state=42, reg_alpha=1, reg_lambda=0.1, subsample=0.8,
-    verbosity=-1,class_weight='balanced',scale_pos_weight=2000
+    verbosity=-1,class_weight='balanced',scale_pos_weight=200,max_depth=4
 )
 print(Y.value_counts())
 trained_model = model.fit(X,Y)
 
 
 joblib.dump(trained_model,'trained_model.pkl')
+
+
+

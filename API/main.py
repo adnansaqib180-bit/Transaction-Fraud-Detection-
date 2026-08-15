@@ -6,7 +6,7 @@ import pandas as pd
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from scemas import Transaction
-
+MODEL_VERSION = '1.0.0'
 app =  FastAPI()
 
 @app.post('/predict')
@@ -27,8 +27,15 @@ def predict_fraud(data : Transaction):
     input_df['gender'] = input_df['gender'].map({'M': 1, 'M': 0})
     prediction = model.predict_proba(input_df)[0][1]
     Prediction = model.predict_proba(input_df)[0][0]
-    if prediction > 0.1 :
-        prediction = f'fraud_transaction{prediction}'
+    propability = round(prediction*100, 2)
+    if prediction > 0.2 :
+        prediction = 'fraud_transaction. '
     else :
-        prediction = f'normal_transaction{prediction} {Prediction}'
-    return JSONResponse(status_code=200,content={'prediction is ': prediction})
+        prediction = 'normal_transaction. '
+    return JSONResponse(status_code=200,content={'prediction is ': prediction, 'probability': propability})
+@app.get('/health')
+def health_check():
+    return {
+        'status' : 'ok',
+        'model_version' : MODEL_VERSION
+    }
