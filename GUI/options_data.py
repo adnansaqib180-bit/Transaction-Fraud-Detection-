@@ -1,7 +1,3 @@
-"""
-Sirf dropdown options ke liye reference lists.
-(Rates yahan use nahi ho rahi — sirf naam list banane ke liye diye gaye the)
-"""
 
 MERCHANTS = [
     "fraud_Abbott-Rogahn", "fraud_Abbott-Steuber", "fraud_Abernathy and Sons",
