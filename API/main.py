@@ -24,7 +24,7 @@ def predict_fraud(data : Transaction):
         'distance_km' : data.distance_km,
         'category_rate' : data.category_rate
     }, index=[0])
-    input_df['gender'] = input_df['gender'].map({'M': 1, 'M': 0})
+    input_df['gender'] = input_df['gender'].map({'M': 1, 'F': 0})
     prediction = model.predict_proba(input_df)[0][1]
     Prediction = model.predict_proba(input_df)[0][0]
     propability = round(prediction*100, 2)
