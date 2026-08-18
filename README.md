@@ -1,6 +1,6 @@
 # Transaction Fraud Detection System
 
-A Machine Learning-powered **Transaction Fraud Detection System** built with **LightGBM**, **FastAPI**, **Streamlit**, and **Docker**. This project predicts whether a financial transaction is fraudulent and provides fraud probability scores through an interactive web interface.
+A Machine Learning-powered **Transaction Fraud Detection System** built with **LightGBM**, **FastAPI**, **Streamlit**, and **Docker**. This project predicts whether a financial transaction is fraudulent and provides fraud probability scores through an interactive web interface. In this project data was very unbalanced (only 0.45% were frauds )so i did experiments with class weight and SMOTE and some other imbalancing technequesto handle the unblanced data .
 
 ## 🚀 Project Overview
 
