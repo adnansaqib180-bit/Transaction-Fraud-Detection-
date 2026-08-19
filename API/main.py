@@ -8,16 +8,20 @@ from fastapi.responses import JSONResponse
 from scemas import Transaction
 from contextlib import asynccontextmanager
 import psycopg2
+import os
+db_password = os.getenv('DATA_BASE_PASSWORD')
+host = os.getenv('DATA_BASE_HOST')
+user_name = os.getenv('USER_NAME')
 
 
 MODEL_VERSION = '1.0.0'
 model_info ={}
 
 DB_SETTINGS = {
-    'host' : 'ep-round-dawn-ayns25o6-pooler.c-5.us-east-2.aws.neon.tech',
+    'host' : host,
     'database' : 'neondb',
-    'user' : 'neondb_owner',
-    'password' : 'npg_IVf95SoGQepE',
+    'user' : user_name,
+    'password' : db_password,
     'port' : 5432,
     'sslmode' : 'require'
 }
