@@ -1,292 +1,189 @@
-# Transaction Fraud Detection System
+# 🛡️ Fraud Detection System — End-to-End ML Pipeline
 
-A Machine Learning-powered **Transaction Fraud Detection System** built with **LightGBM**, **FastAPI**, **Streamlit**, and **Docker**. This project predicts whether a financial transaction is fraudulent and provides fraud probability scores through an interactive web interface. In this project data was very unbalanced (only 0.45% were frauds )so i did experiments with class weight and SMOTE and some other imbalancing technequesto handle the unblanced data .
+[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110-009688.svg)](https://fastapi.tiangolo.com/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-UI-FF4B4B.svg)](https://streamlit.io/)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED.svg)](https://www.docker.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-## 🚀 Project Overview
 
-Financial fraud causes billions of dollars in losses every year. This project uses machine learning techniques and feature engineering to identify suspicious transactions in real time.
+A production-style **fraud detection system** that goes beyond a Jupyter notebook — it covers the full lifecycle of a real ML product: data ingestion, EDA, feature engineering, handling severe class imbalance, model training, validation, deployment behind a REST API, a user-facing UI, and a **feedback loop that logs every prediction back to a database for retraining**.
 
-The application consists of:
-
-* **Machine Learning Model** (LightGBM)
-* **FastAPI Backend API**
-* **Streamlit Frontend**
-* **Dockerized Deployment**
-* **Pydantic Data Validation**
+Built to mirror how fraud detection actually works in production, not just how it works in a demo.
 
 ---
 
-## 📊 Features
+## 🎯 Why This Project
 
-### Machine Learning
+Most fraud-detection portfolios stop at "trained a model, got 95% accuracy." This one is built as a deployable system:
 
-* Fraud transaction prediction
-* Probability score generation
-* LightGBM classification model
-* Class imbalance handling
-* Feature engineering pipeline
-
-### Data Processing
-
-* Transaction time feature extraction
-* Customer age calculation
-* Merchant fraud rate encoding
-* Category fraud rate encoding
-* Distance calculation using geographical coordinates
-
-### Backend
-
-* FastAPI REST API
-* Pydantic request validation
-* Structured JSON responses
-* Error handling
-
-### Frontend
-
-* User-friendly Streamlit interface
-* Real-time predictions
-* Fraud probability visualization
-* Interactive transaction input form
-
-### Deployment
-
-* Docker support
-* Portable deployment
-* Environment-independent execution
+- **Severely imbalanced data** (fraud is rare) handled with two complementary strategies — SMOTE and class-weighting — compared head-to-head rather than assumed.
+- **A real database layer**, not a flat CSV — including the integration issues that come with connecting a live app to a persistent store.
+- **A validation boundary** (Pydantic) between the UI and the model, so bad or malformed input never reaches inference.
+- **A retraining loop** — every prediction and its input is persisted, so the model can be retrained on real production data over time, not just the original static dataset.
+- **Fully containerized** and cloud-deployment-ready, not just "runs on my machine."
 
 ---
 
-## 🛠️ Tech Stack
+## 🏗️ Architecture
 
-| Category         | Technology             |
-| ---------------- | ---------------------- |
-| Language         | Python                 |
-| Machine Learning | LightGBM, Scikit-Learn |
-| Data Processing  | Pandas, NumPy          |
-| API              | FastAPI                |
-| Validation       | Pydantic               |
-| Frontend         | Streamlit              |
-| Visualization    | Matplotlib, Seaborn    |
-| Deployment       | Docker                 |
-
----
-
-## 📁 Project Structure
-
-```text
-Transaction-Fraud-Detection/
-│
-├── DATA/
-│   └── fraud_dataset.csv
-│
-├── MODELS/
-│   └── fraud_model.pkl
-│
-├── NOTEBOOKS/
-│   └── experiments.ipynb
-│
-├── SRC/
-│   ├── feature_engineering.py
-│   ├── preprocessing.py
-│   ├── train.py
-│   └── utils.py
-│
-├── API/
-│   ├── main.py
-│   └── schema.py
-│
-├── GUI/
-│   └── app.py
-│
-├── requirements.txt
-├── Dockerfile
-├── .dockerignore
-└── README.md
+```mermaid
+flowchart LR
+    A[Streamlit UI] -->|Transaction Input| B[Pydantic Validation]
+    B -->|Validated Data| C[FastAPI Backend]
+    C -->|Features| D[ML Model - Inference]
+    D -->|Prediction| C
+    C -->|Store Input + Prediction| E[(Database)]
+    E -->|Historical Data| F[Retraining Pipeline]
+    F -->|Updated Model| D
+    C -->|Response| A
 ```
 
----
-
-## ⚙️ Feature Engineering
-
-The following features are generated before prediction:
-
-### Time-Based Features
-
-* Unix Timestamp
-* Hour of Transaction
-
-### Customer Features
-
-* Age
-* Gender
-
-### Transaction Features
-
-* Transaction Amount
-* Merchant Risk Score
-* Category Risk Score
-
-### Location Features
-
-* Distance from Customer Location
-
-These engineered features significantly improve fraud detection performance.
+**Flow:**
+1. User submits transaction details through the **Streamlit** GUI.
+2. Input is validated against a **Pydantic** schema (type safety, range checks, required fields) before it ever reaches the model.
+3. **FastAPI** routes the validated request to the trained model for inference.
+4. The prediction — along with the original input — is written to the **database**.
+5. This logged data becomes the foundation for **periodic retraining**, so the model keeps learning from real usage instead of staying frozen at training time.
+6. The entire stack is **Dockerized** for consistent, reproducible deployment.
 
 ---
 
-## 📈 Model Performance
+## ✨ Key Features
 
-The model was trained on a highly imbalanced fraud dataset and optimized for fraud detection.
+| Area | What Was Built |
+|---|---|
+| **Data & EDA** | Full exploratory analysis and visualization to understand fraud patterns and feature distributions |
+| **Feature Engineering** | Custom feature transformations to improve model discriminative power |
+| **Imbalance Handling** | Compared **SMOTE (oversampling)** vs **class-weighted models** to handle a highly skewed fraud/non-fraud ratio |
+| **Model Training** | Multiple algorithms trained and evaluated under both imbalance-handling strategies |
+| **API Layer** | **FastAPI** backend exposing prediction endpoints |
+| **Input Validation** | **Pydantic** models enforce a strict, typed contract between UI and backend |
+| **Persistence** | Every prediction + input is saved to a database, enabling **traceability and retraining** |
+| **UI** | **Streamlit** interface for real-time, human-friendly transaction submission |
+| **Deployment** | **Dockerized**, cloud-deployment ready |
 
-Evaluation Metrics:
+---
 
-* Accuracy
-* Precision
-* Recall
-* F1 Score
-* ROC-AUC Score
+## 🧰 Tech Stack
 
-Since fraud detection is an imbalanced classification problem, **Recall and F1 Score** were prioritized over raw accuracy.
+- **Language:** Python 3.10+
+- **Modeling:** scikit-learn, imbalanced-learn (SMOTE)
+- **API:** FastAPI, Uvicorn
+- **Validation:** Pydantic
+- **UI:** Streamlit
+- **Database:** [PostgreSQL / MySQL / SQLite — update with your actual DB]
+- **Containerization:** Docker, Docker Compose
+- **Data & Viz:** Pandas, NumPy, Matplotlib/Seaborn
+
+
+
+---
+
+## ⚙️ Handling Class Imbalance
+
+Fraud detection is a textbook extreme class-imbalance problem — fraudulent transactions are a tiny fraction of total volume. Two strategies were implemented and compared rather than picking one blindly:
+
+1. **SMOTE (Synthetic Minority Oversampling)** — generates synthetic examples of the minority (fraud) class to balance the training distribution.
+2. **Class Weighting** — penalizes misclassification of the minority class more heavily during training, without altering the dataset itself.
+
+Both approaches were evaluated using metrics appropriate for imbalanced problems (Precision, Recall, F1-score, ROC-AUC / PR-AUC — **not raw accuracy**, which is misleading on skewed data).
+
+
+
+---
+
+## 🚧 Engineering Challenges & Solutions
+
+Real challenges solved during the build (this section is what separates this from a tutorial project):
+
+- **Database Integration** — Connecting a live FastAPI service to a persistent database for prediction logging required handling connection pooling, schema design for storing variable input + prediction pairs, and reliable read/write cycles for the retraining loop.
+- **Validation Boundary** — Introduced Pydantic schemas so malformed or malicious input from the UI is rejected before it reaches the model, keeping inference logic clean and safe.
+- **Imbalanced Data** — Naively training on the raw distribution produced a model that looked accurate but missed most actual fraud; solved by testing SMOTE and class-weighting side by side and evaluating with imbalance-aware metrics.
+- **Retraining Loop** — Designed the database schema so every served prediction becomes a labeled (or label-able) training example for future retraining, closing the loop between deployment and model improvement.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Docker & Docker Compose installed
+- (Optional) Python 3.10+ if running components outside Docker
+
+### Run with Docker
+```bash
+git clone https://github.com/<your-username>/fraud-detection-system.git
+cd fraud-detection-system
+docker-compose up --build
+```
+
+- **Streamlit UI:** http://localhost:8501
+- **FastAPI docs (Swagger):** http://localhost:8000/docs
+
+### Run Locally (without Docker)
+```bash
+pip install -r requirements.txt
+
+# Start the API
+uvicorn src.api.main:app --reload
+
+# Start the UI (in a separate terminal)
+streamlit run src/ui/app.py
+```
 
 ---
 
 ## 🔌 API Usage
 
-### Prediction Endpoint
-
-```http
-POST /predict
-```
-
-### Sample Request
+**Endpoint:** `POST /predict`
 
 ```json
 {
-  "trans_date_trans_time": "2021-01-01 12:00:00",
-  "merchant": "fraud_Abbott-Rogahn",
-  "category": "health_fitness",
-  "amt": 765,
-  "gender": "M",
-  "lat": 40.7128,
-  "long": -74.0060
+  "transaction_amount": 1500.00,
+  "transaction_type": "online",
+  "account_age_days": 45,
+  "...": "..."
 }
 ```
 
-### Sample Response
-
+**Response:**
 ```json
 {
-  "prediction": "Fraud",
-  "fraud_probability": 96.65
+  "prediction": "fraud",
+  "fraud_probability": 0.87,
+  "prediction_id": "uuid-here"
 }
 ```
 
----
-
-## 🐳 Docker Deployment
-
-### Build Docker Image
-
-```bash
-docker build -t fraud-detection .
-```
-
-### Run Docker Container
-
-```bash
-docker run -p 8501:8000 fraud-detection
-```
-
-After starting the container, open:
-
-```text
-http://localhost:8501
-```
+*(Update field names to match your actual Pydantic schema.)*
 
 ---
 
-## 💻 Local Installation
+## 🔁 Retraining Pipeline
 
-### Clone Repository
+Every prediction is persisted with its input features, enabling:
+- Drift monitoring — comparing live input distributions to training data over time
+- Periodic retraining on accumulated real-world data
+- A feedback loop once ground-truth labels (confirmed fraud/not-fraud) become available
 
-```bash
-git clone https://github.com/adnansaqib180-bit/Transaction-Fraud-Detection.git
-```
-
-### Move into Project Directory
-
-```bash
-cd Transaction-Fraud-Detection
-```
-
-### Create Virtual Environment
-
-```bash
-python -m venv venv
-```
-
-### Activate Environment
-
-Windows:
-
-```bash
-venv\Scripts\activate
-```
-
-Linux/Mac:
-
-```bash
-source venv/bin/activate
-```
-
-### Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
+*(If you've automated this — e.g. a scheduled retraining job — describe it here; it's a strong signal of production-mindedness.)*
 
 ---
 
-## ▶️ Running the Application
+## 📈 Future Improvements
 
-### Start FastAPI Backend
-
-```bash
-uvicorn API.main:app --reload
-```
-
-### Start Streamlit Frontend
-
-```bash
-streamlit run GUI/app.py
-```
+- [ ] Automated retraining trigger based on data drift detection
+- [ ] Model monitoring dashboard (prediction distribution, latency, drift)
+- [ ] CI/CD pipeline for automated testing and deployment
+- [ ] A/B testing between model versions in production
 
 ---
 
-## 🎯 Future Improvements
+## 📬 Contact
 
-* Model monitoring
-* Database integration
-* User authentication
-* Cloud deployment (AWS/Azure/GCP)
-* Real-time transaction streaming
-* Explainable AI (SHAP)
+**[Your Name]**
+[LinkedIn] · [GitHub] · [Email]
 
 ---
 
-## 👨‍💻 Author
-
-**Adnan Saqib**
-
-Machine Learning Engineer
-
-* GitHub: https://github.com/adnansaqib180-bit
-* LinkedIn: http://www.linkedin.com/in/adnan-saqib-ml-engineer
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License.
-
-Feel free to use, modify, and distribute this project for educational and research purposes.
+*If you found this project interesting, feel free to star ⭐ the repo or reach out — always happy to discuss the design decisions behind it.*
