@@ -9,6 +9,8 @@ from scemas import Transaction
 from contextlib import asynccontextmanager
 import psycopg2
 import os
+from dotenv import load_dotenv
+load_dotenv()
 db_password = os.getenv('DATA_BASE_PASSWORD')
 host = os.getenv('DATA_BASE_HOST')
 user_name = os.getenv('USER_NAME')
@@ -67,6 +69,8 @@ def predict_fraud(data : Transaction):
 
     else :
         prediction = 'normal_transaction. '
+    connection = None
+    cursor = None
     try:
         connection = psycopg2.connect(**DB_SETTINGS)
         cursor = connection.cursor()
@@ -83,7 +87,7 @@ def predict_fraud(data : Transaction):
         if connection:
             connection.close()
         
-    return JSONResponse(status_code=200,content={'prediction is ': prediction, 'probability': propability})
+    return JSONResponse(status_code=200,content={'prediction is ': prediction, 'fraud probability': propability})
 
 @app.get('/health')
 def health_check():

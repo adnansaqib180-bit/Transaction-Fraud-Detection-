@@ -87,7 +87,7 @@ if submitted:
 
             if result is not None:
                 pred = result.get("prediction is ")
-                prob = result.get("probability")
+                prob = result.get("fraud probability")
 
                 st.divider()
                 st.subheader("📊 Prediction Result")
