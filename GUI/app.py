@@ -5,8 +5,8 @@ import requests
 import streamlit as st
 from options_data import MERCHANTS, CATEGORIES
 
-API_URL = "http://localhost:8000/predict"
-TIMEOUT_SEC = 15
+API_URL = "transaction-fraud-detection-production.up.railway.app"
+TIMEOUT_SEC = 20
 
 st.set_page_config(page_title="Fraud Prediction", page_icon="💳", layout="centered")
 
