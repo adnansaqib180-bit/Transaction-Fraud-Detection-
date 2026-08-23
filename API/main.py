@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parents[1]))
-from SRC.UTILS import load_model
+from fuctions import load_model
 import pandas as pd
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
