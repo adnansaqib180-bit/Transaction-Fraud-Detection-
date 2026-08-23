@@ -1,11 +1,8 @@
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parents[1]))
 from pydantic import BaseModel , field_validator, computed_field, Field
 from typing import Annotated
 from datetime import datetime, date, timezone
 from dict import merchant_rate, category_rate
-from SRC.UTILS import haversine_np
+from fuctions.fuction import haversine_np
 
 class Transaction(BaseModel):
     trans_date_trans_time :  Annotated[datetime, "Transaction date and time"] = Field(example="2021-01-01 12:00:00")

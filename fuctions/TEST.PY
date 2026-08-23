@@ -1,4 +1,4 @@
-from UTILS import feature_engineering , load_data, preprocessor, load_model
+from fuction import feature_engineering , load_data, preprocessor, load_model
 from sklearn.metrics import accuracy_score, precision_score, f1_score, recall_score, confusion_matrix
 
 final_df = load_data('DATA/raw data/Test_data.csv')
