@@ -1,6 +1,4 @@
-import json
 from datetime import date, time
-
 import requests
 import streamlit as st
 from options_data import MERCHANTS, CATEGORIES

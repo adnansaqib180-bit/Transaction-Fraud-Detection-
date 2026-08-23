@@ -1,8 +1,6 @@
 from lightgbm import LGBMClassifier
 import joblib 
-from UTILS import feature_engineering , load_data, preprocessor
-from imblearn.over_sampling import SMOTE
-
+from fuctions.fuction import feature_engineering , load_data, preprocessor
 
 final_df = load_data('DATA/raw data/fraudTrain.csv')
 

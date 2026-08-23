@@ -1,6 +1,3 @@
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parents[1]))
 from fuctions.fuction import load_model
 import pandas as pd
 from fastapi import FastAPI, HTTPException
