@@ -70,7 +70,12 @@ def feature_engineering(df):
 def preprocessor(df , col_name : str):
     df[col_name] = df[col_name].map({"M":1,"F":0})
     return df  
-import joblib 
+import os
+import joblib
+
 def load_model():
-    model = joblib.load(r'c:\Users\USER\OneDrive\Desktop\Transaction Fraud Detection\Transaction-Fraud-Detection-\MODELS\trained_model.pkl')
-    return model 
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    model_path = os.path.join(base_dir, 'MODELS', 'trained_model.pkl')
+    
+    model = joblib.load(model_path)
+    return model
