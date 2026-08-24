@@ -3,7 +3,7 @@ import requests
 import streamlit as st
 from options_data import MERCHANTS, CATEGORIES
 
-API_URL = "transaction-fraud-detection-production.up.railway.app"
+API_URL = "https://surprising-peace-production-66f6.up.railway.app/predict"
 TIMEOUT_SEC = 20
 
 st.set_page_config(page_title="Fraud Prediction", page_icon="💳", layout="centered")
@@ -119,7 +119,7 @@ if submitted:
                     prob_val = float(prob)
                     c1, c2 = st.columns([1, 2])
                     with c1:
-                        st.metric("Fraud Probability", f"{prob_val * 100:.2f}%")
+                        st.metric("Fraud Probability", f"{prob_val}%")
                     with c2:
                         st.progress(min(max(prob_val, 0.0), 1.0))
 
