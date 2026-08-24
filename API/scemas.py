@@ -1,7 +1,7 @@
 from pydantic import BaseModel , field_validator, computed_field, Field
 from typing import Annotated
 from datetime import datetime, date, timezone
-from dict import merchant_rate, category_rate
+from .dict import merchant_rate, category_rate
 from fuctions.fuction import haversine_np
 
 class Transaction(BaseModel):

@@ -5,7 +5,6 @@ from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
-
 from fuctions.fuction import load_model
 from .scemas import Transaction  
 
