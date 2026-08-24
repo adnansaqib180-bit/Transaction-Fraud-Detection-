@@ -9,21 +9,11 @@ from fuctions.fuction import load_model
 from .scemas import Transaction  
 
 load_dotenv()
-db_password = os.getenv('DATA_BASE_PASSWORD')
-host = os.getenv('DATA_BASE_HOST')
-user_name = os.getenv('USER_NAME')
 
 MODEL_VERSION = '1.0.0'
 model_info = {}
 
-DB_SETTINGS = {
-    'host': host,
-    'database': 'neondb',
-    'user': user_name,
-    'password': db_password,
-    'port': 5432,
-    'sslmode': 'require'
-}
+DB_URL = os.getenv('DATABASE_URL')
 
 @asynccontextmanager 
 async def lifespan(app: FastAPI):
@@ -65,7 +55,7 @@ def predict_fraud(data: Transaction):
     connection = None
     cursor = None
     try:
-        connection = psycopg2.connect(**DB_SETTINGS)
+        connection = psycopg2.connect(DB_URL)
         cursor = connection.cursor()
         cursor.execute(
             "INSERT INTO predictions (amt, gender, city_pop, unix_time, hour, merchant_rate, age, distance_km, category_rate, prediction) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
