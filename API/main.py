@@ -13,7 +13,7 @@ load_dotenv()
 MODEL_VERSION = '1.0.0'
 model_info = {}
 
-DB_URL = os.getenv('DATABASE_URL')
+DB_URL = os.getenv('DB_URL')
 
 @asynccontextmanager 
 async def lifespan(app: FastAPI):
