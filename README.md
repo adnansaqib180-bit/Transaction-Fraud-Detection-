@@ -118,7 +118,7 @@ docker-compose up --build
 ```
 
 - **Streamlit UI:** http://localhost:8501
-- **FastAPI docs (Swagger):** http://localhost:8000/docs
+- **FastAPI docs (Swagger):**https://surprising-peace-production-66f6.up.railway.app/docs
 
 ### Run Locally (without Docker)
 ```bash
@@ -179,11 +179,6 @@ Every prediction is persisted with its input features, enabling:
 
 ---
 
-## 📬 Contact
 
-**[Your Name]**
-[LinkedIn] · [GitHub] · [Email]
-
----
 
 *If you found this project interesting, feel free to star ⭐ the repo or reach out — always happy to discuss the design decisions behind it.*
